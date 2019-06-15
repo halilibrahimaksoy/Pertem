@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">TSK Personel Alımı</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">MSB Personel Temin</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="measurement_size">Boy (cm)</string>
+    <string name="measurement_weight">Kilo (kg)</string>
+    <string name="measurement_query">SORGULA</string>
+    <string name="warn_size_is_empty">Boy alanı boş geçilemez !</string>
+    <string name="warn_weight_is_empty">Boy alanı boş geçilemez !</string>
+
+    <string name="size_weight_index_message">Vücut Kitle Endeksiniz : %1s</string>
+    <string name="msb">Millî Savunma Bakanlığı</string>
+    <string name="kkk">Kara Kuvvetleri Komutanlığı</string>
+    <string name="hvkk">Hava Kuvvetleri Komutanlığı</string>
+    <string name="dkk">Deniz Kuvvetleri Komutanlığı</string>
+    <string name="msu">Millî Savunma Üniversitesi</string>
+    <string name="connection_warn">İnternet Bağlantınızı Kontrol Edin !</string>
+    <string name="splash_text">Bu Uygulama Hiçbir Resmi Kurum ve Kuruluşa Bağlı Değildir.\n Tamamen Bilgi Paylaşımı Amaçlı Yapılmıştır.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3815159854237169/8884445897</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3815159854237169/9239669114</string>
+
+    <string name="empty_procurement">Mevcut Bir Temin Faaliteti Bulunmamaktadır.</string>
+    <string name="empty_announce">Mevcut Bir Duyuru Bulunmamaktadır.</string>
+
+    <string name="new_version_title">Güncelleme Mevcut</string>
+    <string name="new_version_message">Uygulamanın sağlıklı çalışabilmesi ve içeriklerin sağlanabilmesi için güncelleme gerekiyor!</string>
+    <string name="new_version_button">Tamam</string>
+</resources>

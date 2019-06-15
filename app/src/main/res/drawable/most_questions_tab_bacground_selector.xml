@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/most_question_selected_tab" android:state_selected="true" />
+    <item android:drawable="@color/most_question_unselected_tab" />
+</selector>

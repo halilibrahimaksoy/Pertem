@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/explanation_item_left_margin"
+        android:layout_marginTop="@dimen/explanation_item_top_margin"
+        android:layout_marginRight="@dimen/explanation_item_left_margin"
+        android:background="@drawable/explanation_item_shape"
+        android:orientation="horizontal"
+        android:padding="@dimen/item_padding">
+
+        <View
+            android:id="@+id/leftIndicator"
+            android:layout_width="4dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin" />
+
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin"
+            android:text="Başvuru ve Giriş Koşulları"
+            android:textColor="@drawable/explanation_item_text_color_selector"
+            android:textSize="@dimen/item_title_text" />
+
+    </LinearLayout>
+</LinearLayout>

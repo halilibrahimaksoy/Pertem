@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/list_left_margin"
+        android:layout_marginTop="@dimen/list_top_margin"
+        android:layout_marginRight="@dimen/list_right_margin"
+        android:layout_marginBottom="@dimen/list_bottom_margin"
+        android:background="@drawable/announce_item_shape"
+        android:orientation="horizontal"
+        android:padding="@dimen/item_padding">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:minWidth="55dp"
+            android:minHeight="40dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/announce_date_shape_top"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtAnnounceDateMoon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:maxLines="1"
+                    android:text="Haziran"
+                    android:textColor="@color/text_color_3"
+                    android:textSize="@dimen/item_date_text_top" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/announce_data_shape_bottom"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtAnnounceDateDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:maxLines="1"
+                    android:text="6"
+                    android:textColor="@color/text_color_2"
+                    android:textSize="@dimen/item_date_text" />
+
+                <TextView
+                    android:id="@+id/txtAnnounceDateDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:maxLines="1"
+                    android:text="Perşembe"
+                    android:textColor="@color/text_color_2"
+                    android:textSize="@dimen/item_date_text" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/item_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DUYURU"
+                android:textSize="@dimen/item_title_text" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

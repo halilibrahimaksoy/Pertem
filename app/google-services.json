@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "802413592760",
+    "firebase_url": "https://pertem-7773f.firebaseio.com",
+    "project_id": "pertem-7773f",
+    "storage_bucket": "pertem-7773f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802413592760:android:823c6a718751588c",
+        "android_client_info": {
+          "package_name": "com.haksoy.pertem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802413592760-kra2ld4ksvvcp4i1hloeo8hf80l4letr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.haksoy.pertem",
+            "certificate_hash": "fe41e10803e80df592e2701d95b8c4aeba59291c"
+          }
+        },
+        {
+          "client_id": "802413592760-r8itvmue1chhnqqcpvvtto6g9lma96lu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCcLMXarZLpKFaRyhe3ff1oUsWQr5xD6M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802413592760-r8itvmue1chhnqqcpvvtto6g9lma96lu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

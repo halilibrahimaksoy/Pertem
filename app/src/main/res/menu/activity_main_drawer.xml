@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_teminler"
+            android:icon="@android:drawable/ic_menu_more"
+            android:title="GÜNCEL TEMİNLER" />
+        <item
+            android:id="@+id/nav_duyurular"
+            android:icon="@android:drawable/ic_menu_more"
+            android:title="GÜNCEL DUYURULAR" />
+        <item
+            android:id="@+id/nav_most_question"
+            android:icon="@android:drawable/ic_menu_more"
+            android:title="Sıkça Sorulan Sorular" />
+        <item
+            android:id="@+id/nav_explanation"
+            android:icon="@android:drawable/ic_menu_more"
+            android:title="Personel Temini" />
+        <item
+            android:id="@+id/nav_measurement"
+            android:icon="@android:drawable/ic_menu_more"
+            android:title="Boy Kilo Nomogramı" />
+    </group>
+
+    <!--<item android:title="Bağlantılar" android:menuCategory="container">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_con"-->
+                <!--android:icon="@android:drawable/ic_menu_compass"-->
+                <!--android:title="Millî Savunma Bakanlığı" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_con1"-->
+                <!--android:icon="@android:drawable/ic_menu_compass"-->
+                <!--android:title="Kara Kuvvetleri Komutanlığı" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_con2"-->
+                <!--android:icon="@android:drawable/ic_menu_compass"-->
+                <!--android:title="Hava Kuvvetleri Komutanlığı" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_con3"-->
+                <!--android:icon="@android:drawable/ic_menu_compass"-->
+                <!--android:title="Deniz Kuvvetleri Komutanlığı" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_con4"-->
+                <!--android:icon="@android:drawable/ic_menu_compass"-->
+                <!--android:title="Millî Savunma Üniversitesi" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

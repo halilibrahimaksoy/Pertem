@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/list_left_margin"
+        android:layout_marginRight="@dimen/list_right_margin"
+        android:layout_marginBottom="@dimen/list_bottom_margin"
+        android:layout_marginTop="@dimen/list_top_margin"
+        android:padding="@dimen/item_padding"
+        android:background="@drawable/procurement_item_shape">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin"
+            android:text="TÜRK SİLAHLI KUVVETLERINE 2018 YILI DIŞ KAYNAKTAN MUVAZZAF SUBAY ADAYI TEMİNİ İLANI"
+            android:textSize="@dimen/item_title_text" />
+
+        <TextView
+            android:id="@+id/txtExp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTitle"
+            android:layout_margin="@dimen/item_margin"
+            android:gravity="left"
+            android:text="Dış Kaynaktan Muvazzaf Subay Aday Temini Başvuru Kılavuzuna Ulaşmak ve Başvuru Yapmak İçin Tıklayınız."
+            android:textSize="@dimen/item_exp_text" />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtExp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/item_margin"
+            android:text="06.11.2018"
+            android:textSize="@dimen/item_date_text" />
+    </RelativeLayout>
+</LinearLayout>

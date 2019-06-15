@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/base_item_shape_radius"></corners>
+    <stroke
+        android:width="2dp"
+        android:color="@color/explanation_item_border"></stroke>
+    <!--<solid android:color="@drawable/explanation_item_text_color_selector"></solid>-->
+    <solid android:color="@color/explanation_item_background"></solid>
+</shape>

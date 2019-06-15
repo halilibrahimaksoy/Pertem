@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5d1f1f</color>
+    <color name="colorPrimaryDark">#2a2a2a</color>
+    <color name="colorAccent">#262a2e</color>
+
+
+    <color name="procurement_item_border">#3e3e3e</color>
+    <color name="announce_date_border">#933</color>
+    <color name="announce_item_border">@color/procurement_item_border</color>
+    <color name="most_question_item_border">@color/procurement_item_border</color>
+    <color name="explanation_item_border">@color/procurement_item_border</color>
+
+    <color name="text_color_1">#2a2a2a</color>
+    <color name="text_color_2">#3a3a3a</color>
+    <color name="text_color_3">#eee</color>
+    <color name="nav_footer_background">#37474F</color>
+    <color name="most_question_unselected_tab">#37474F</color>
+    <color name="most_question_selected_tab">#222c31</color>
+
+    <color name="base_item_background">#cdcdcd</color>
+
+    <color name="most_question_selected_text">#eee</color>
+    <color name="most_question_unselected_text">#ccc</color>
+    <color name="most_question_answer_background">#80BDBDBD</color>
+    <color name="most_question_item_background">@color/base_item_background</color>
+    <color name="most_question_item_circle_background">#933</color>
+    <color name="explanation_item_selected">@color/procurement_item_border</color>
+    <color name="announce_item_background">@color/base_item_background</color>
+    <color name="procurement_item_background">@color/base_item_background</color>
+    <color name="explanation_item_background">@color/base_item_background</color>
+    <color name="measurement_sticky_background">#963232</color>
+    <color name="measurement_sticky_icon">#fff</color>
+    <color name="measurement_hint_icon">#bbb</color>
+    <color name="measurement_background">#B0BEC5</color>
+
+
+</resources>
