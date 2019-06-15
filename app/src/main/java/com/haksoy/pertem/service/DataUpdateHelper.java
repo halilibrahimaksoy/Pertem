@@ -186,7 +186,6 @@ public class DataUpdateHelper {
 
     private boolean onCompareAndNotifyList
             (List<BaseModelPresenter> oldList, List<BaseModelPresenter> newList) {
-        Log.d(TAG, "Old list size " + oldList.size() + " and new list size " + newList.size());
         boolean isNew = true;
         if (newList == null || newList.size() == 0)
             return false;
@@ -282,7 +281,11 @@ public class DataUpdateHelper {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mRef = database.getReference(Constant.UPDATED_CONFIG);
         mRef.child(type).child(Constant.LAST_UPDATE_TIME).setValue(ServerValue.TIMESTAMP);
-        mRef.child(type).child(Constant.LAST_UPDATE_DATE).setValue(updateString);
+        try {
+            mRef.child(type).child(Constant.LAST_UPDATE_DATE).setValue(ServerValue.TIMESTAMP +  " : "+updateString+" : "+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
