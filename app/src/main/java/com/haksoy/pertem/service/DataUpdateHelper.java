@@ -14,10 +14,14 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.haksoy.pertem.firebase.FirebaseClient;
 import com.haksoy.pertem.model.Announce;
+import com.haksoy.pertem.model.AnnounceResultModel;
+import com.haksoy.pertem.model.ExplanataionResultModel;
 import com.haksoy.pertem.model.ExplanationModel;
 import com.haksoy.pertem.model.MostQuestion;
+import com.haksoy.pertem.model.MostQuestionResultModel;
 import com.haksoy.pertem.model.Notification;
 import com.haksoy.pertem.model.Procurement;
+import com.haksoy.pertem.model.ProcurementResultModel;
 import com.haksoy.pertem.model.SendToTopicRequest;
 import com.haksoy.pertem.model.UpdateConfig;
 import com.haksoy.pertem.retrofit.RetrofitClient;
@@ -119,8 +123,6 @@ public class DataUpdateHelper {
             public void onResponse(Call call, Response response) {
                 List<Announce> announceList = (List<Announce>) response.body();
                 onNewAnnounceControl(announceList);
-
-
             }
 
             @Override
@@ -140,14 +142,7 @@ public class DataUpdateHelper {
                     List<BaseModelPresenter> currentList = (List<BaseModelPresenter>) value;
                     List<BaseModelPresenter> newList1 = (List<BaseModelPresenter>) ((Object) newList);
                     if (onCompareAndNotifyList(currentList, newList1)) {
-                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference mRef = database.getReference(Constant.ROOT_PROCUREMENT);
-
-                        mRef.removeValue();
-                        for (Procurement procurement : newList) {
-                            mRef.child(mRef.push().getKey()).setValue(procurement);
-                        }
-
+                        FirebaseClient.getInstance().uploadProcurementList(new ProcurementResultModel(newList));
 
                     }
                     setLastUpdatedTime(Enums.Procurement.name());
@@ -167,13 +162,7 @@ public class DataUpdateHelper {
                     List<BaseModelPresenter> currentList = (List<BaseModelPresenter>) value;
                     List<BaseModelPresenter> newList1 = (List<BaseModelPresenter>) ((Object) newList);
                     if (onCompareAndNotifyList(currentList, newList1)) {
-
-                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        final DatabaseReference mRef = database.getReference(Constant.ROOT_ANNOUNCE);
-                        mRef.removeValue();
-                        for (Announce announce : newList) {
-                            mRef.child(mRef.push().getKey()).setValue(announce);
-                        }
+                        FirebaseClient.getInstance().uploadAnnounceList(new AnnounceResultModel(newList));
 
                     }
                     setLastUpdatedTime(Enums.Announce.name());
@@ -184,8 +173,8 @@ public class DataUpdateHelper {
 
     }
 
-    private boolean onCompareAndNotifyList
-            (List<BaseModelPresenter> oldList, List<BaseModelPresenter> newList) {
+    private boolean onCompareAndNotifyList(List<BaseModelPresenter> oldList, List<BaseModelPresenter> newList) {
+        Log.d(TAG, "Old list size " + oldList.size() + " and new list size " + newList.size());
         boolean isNew = true;
         if (newList == null || newList.size() == 0)
             return false;
@@ -205,30 +194,23 @@ public class DataUpdateHelper {
 
     }
 
+
     private void notifyOtherUser(BaseModelPresenter modelPresenter) {
         RetrofitClient.sendNotification(new SendToTopicRequest(Constant.NEWS, new Notification(modelPresenter.onTitle())));
         Log.d(TAG, "notifyOtherUser  : " + modelPresenter.onTitle() + " : " + modelPresenter.onDesc());
     }
 
     private void mostQuestionsUpdate() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference mRef = database.getReference(Constant.ROOT_MOST_QUESTION_CATEGORY);
-        final DatabaseReference mRef2 = database.getReference(Constant.ROOT_MOST_QUESTION);
-
         RetrofitClient.getMostQuestion(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
-                Map<String, List<MostQuestion>> mostQuestionMap = (Map<String, List<MostQuestion>>) response.body();
 
-                mRef.removeValue();
-                mRef2.removeValue();
+                MostQuestionResultModel resultModel = new MostQuestionResultModel();
 
-                for (String key : mostQuestionMap.keySet()) {
-                    String keys = mRef.push().getKey();
+                resultModel.setMostQuestionMap((Map<String, List<MostQuestion>>) response.body());
 
-                    mRef.child(keys).setValue(key);
-                    mRef2.child(keys).setValue(mostQuestionMap.get(key));
-                }
+                FirebaseClient.getInstance().uploadMostQuestionList(resultModel);
+
                 setLastUpdatedTime(Enums.MostQuestions.name());
 
             }
@@ -242,25 +224,15 @@ public class DataUpdateHelper {
     }
 
     private void explanationUpdate() {
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference mRef = database.getReference(Constant.ROOT_EXPLANATION_CATEGORY);
-        final DatabaseReference mRef2 = database.getReference(Constant.ROOT_EXPLANATION);
-
         RetrofitClient.getExplanation(new Callback() {
 
             @Override
             public void onResponse(Call call, Response response) {
-                Map<String, List<ExplanationModel>> explanationMap = (Map<String, List<ExplanationModel>>) response.body();
+                ExplanataionResultModel resultModel = new ExplanataionResultModel();
 
-                mRef.removeValue();
-                mRef2.removeValue();
-                for (String key : explanationMap.keySet()) {
-                    String keys = mRef.push().getKey();
+                resultModel.setExplanationMap((Map<String, List<ExplanationModel>>) response.body());
 
-                    mRef.child(keys).setValue(key);
-                    mRef2.child(keys).setValue(explanationMap.get(key));
-                }
+                FirebaseClient.getInstance().uploadExplanationList(resultModel);
 
                 setLastUpdatedTime(Enums.Explanation.name());
 
@@ -281,11 +253,7 @@ public class DataUpdateHelper {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mRef = database.getReference(Constant.UPDATED_CONFIG);
         mRef.child(type).child(Constant.LAST_UPDATE_TIME).setValue(ServerValue.TIMESTAMP);
-        try {
-            mRef.child(type).child(Constant.LAST_UPDATE_DATE).setValue(ServerValue.TIMESTAMP +  " : "+updateString+" : "+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        mRef.child(type).child(Constant.LAST_UPDATE_DATE).setValue(updateString);
 
     }
 
@@ -296,7 +264,7 @@ public class DataUpdateHelper {
             public void onNotified(Object key, Object value) {
                 if (key == Enums.GetUpdateConfig) {
                     UpdateConfig config = (UpdateConfig) value;
-                    if ((System.currentTimeMillis() - ((UpdateConfig) value).getLastUpdateTime()) > ((UpdateConfig) value).getUpdateCycle()) {
+                    if ((System.currentTimeMillis() - ((UpdateConfig) value).getLastUpdateTime()) > ((UpdateConfig) value).getUpdateCycle()|| true) {
                         setData(type);
                     } else
                         controlAndNotifyAction(type);

@@ -3,35 +3,41 @@ package com.haksoy.pertem.firebase;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.haksoy.pertem.model.Announce;
-import com.haksoy.pertem.model.ExplanationModel;
-import com.haksoy.pertem.model.MostQuestion;
+import com.haksoy.pertem.model.AnnounceResultModel;
+import com.haksoy.pertem.model.ExplanataionResultModel;
+import com.haksoy.pertem.model.MostQuestionResultModel;
 import com.haksoy.pertem.model.Procurement;
-import com.haksoy.pertem.model.UpdateConfig;
+import com.haksoy.pertem.model.ProcurementResultModel;
 import com.haksoy.pertem.tools.Constant;
 import com.haksoy.pertem.tools.Enums;
 import com.haksoy.pertem.tools.INotifyAction;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FirebaseClient {
     private static String TAG = "FirebaseClient";
-    private static FirebaseDatabase database;
     private static FirebaseClient instance;
+    private static FirebaseFirestore db;
+    private static FirebaseFirestore offlineDb;
 
     private FirebaseClient() {
-        database = FirebaseDatabase.getInstance();
+        db = FirebaseFirestore.getInstance();
+        offlineDb = FirebaseFirestore.getInstance();
         try {
-            database.setPersistenceEnabled(true);
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setPersistenceEnabled(true)
+                    .build();
+            offlineDb.setFirestoreSettings(settings);
         } catch (Exception ex) {
             Log.e(TAG, ex.getLocalizedMessage());
         }
@@ -45,151 +51,142 @@ public class FirebaseClient {
     }
 
     public static void getAnnounceList(final INotifyAction notifyAction) {
-        final List<Announce> announceList;
-        DatabaseReference mRef = database.getReference(Constant.ROOT_ANNOUNCE);
-        mRef.keepSynced(true);
-        announceList = new ArrayList<>();
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        db.collection(Constant.ROOT_ANNOUNCE).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    announceList.add(snapshot.getValue(Announce.class));
-                }
-                if (notifyAction != null)
-                    notifyAction.onNotified(Enums.GetAnnounce, announceList);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                List<Announce> resultList = new ArrayList<>();
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        resultList = queryDocumentSnapshot.toObject(AnnounceResultModel.class).getAnnounceList();
+                    }
+                    if (notifyAction != null)
+                        notifyAction.onNotified(Enums.GetAnnounce, resultList);
+                } else
+                    notifyAction.onNotified(Enums.GetAnnounce, resultList);
             }
+        });
 
+    }
+
+    public static void uploadAnnounceList(final AnnounceResultModel resultModel) {
+        db.collection(Constant.ROOT_ANNOUNCE).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        queryDocumentSnapshot.getReference().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                db.collection(Constant.ROOT_ANNOUNCE).add(resultModel);
+                            }
+                        });
+                    }
+                }
 
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("sadfg");
             }
         });
 
     }
 
     public static void getProcurementList(final INotifyAction notifyAction) {
-        final List<Procurement> procurementList;
-        DatabaseReference mRef = database.getReference(Constant.ROOT_PROCUREMENT);
-        mRef.keepSynced(true);
-        procurementList = new ArrayList<>();
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        db.collection(Constant.ROOT_PROCUREMENT).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    procurementList.add(snapshot.getValue(Procurement.class));
-                }
-                if (notifyAction != null)
-                    notifyAction.onNotified(Enums.GetProcurement, procurementList);
-            }
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
+                List<Procurement> resultList = new ArrayList<>();
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        resultList = queryDocumentSnapshot.toObject(ProcurementResultModel.class).getProcurementList();
+                    }
+                    if (notifyAction != null)
+                        notifyAction.onNotified(Enums.GetProcurement, resultList);
+                } else
+                    notifyAction.onNotified(Enums.GetProcurement, resultList);
+            }
+        });
+
+    }
+
+    public static void uploadProcurementList(final ProcurementResultModel resultModel) {
+        db.collection(Constant.ROOT_PROCUREMENT).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        queryDocumentSnapshot.getReference().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                db.collection(Constant.ROOT_ANNOUNCE).add(resultModel);
+                            }
+                        });
+                    }
+                }
 
             }
         });
+
     }
 
     public static void getExplanationList(final INotifyAction notifyAction) {
-        final HashMap<String, List<ExplanationModel>> listDataChild;
-        listDataChild = new LinkedHashMap<>();
-        final ArrayList<String> explanationCategoryList;
-        final ArrayList<String> keys;
-        explanationCategoryList = new ArrayList<>();
-        keys = new ArrayList<>();
-        DatabaseReference mRef = database.getReference(Constant.ROOT_EXPLANATION_CATEGORY);
-        mRef.keepSynced(true);
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        offlineDb.collection(Constant.ROOT_EXPLANATION).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String categoryText = snapshot.getValue(String.class);
-                    String categoryKey = snapshot.getKey();
-                    explanationCategoryList.add(categoryText);
-                    keys.add(categoryKey);
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                    notifyAction.onNotified(Enums.GetExplanation, queryDocumentSnapshot.toObject(ExplanataionResultModel.class).getExplanationMap());
                 }
-                DatabaseReference mRef2;
-                for (int i = 0; i < explanationCategoryList.size(); i++) {
+            }
+        });
+    }
 
-                    mRef2 = database.getReference(Constant.ROOT_EXPLANATION + "/" + keys.get(i));
-                    final List<ExplanationModel> explanationModelList = new ArrayList<>();
-                    final int finalI = i;
-                    mRef2.keepSynced(true);
-                    mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                ExplanationModel model = snapshot.getValue(ExplanationModel.class);
-                                explanationModelList.add(model);
+    public static void uploadExplanationList(final ExplanataionResultModel resultModel) {
+        db.collection(Constant.ROOT_EXPLANATION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        queryDocumentSnapshot.getReference().delete();
+                    }
+                    db.collection(Constant.ROOT_EXPLANATION).add(resultModel);
+                }
+            }
+        });
+    }
+
+    public static void getMostQuestionList(final INotifyAction notifyAction) {
+        offlineDb.collection(Constant.ROOT_MOST_QUESTION).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+
+                    notifyAction.onNotified(Enums.GetMostQuestion, queryDocumentSnapshot.toObject(MostQuestionResultModel.class).getMostQuestionMap());
+                }
+            }
+        });
+    }
+
+    public static void uploadMostQuestionList(final MostQuestionResultModel resultModel) {
+        db.collection(Constant.ROOT_MOST_QUESTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        queryDocumentSnapshot.getReference().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                db.collection(Constant.ROOT_MOST_QUESTION).add(resultModel);
                             }
-                            listDataChild.put(explanationCategoryList.get(finalI), explanationModelList);
-
-                            if (explanationCategoryList.size() - finalI < 2)
-                                notifyAction.onNotified(Enums.GetExplanation, listDataChild);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
+                        });
+                    }
                 }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-    }
-
-    public static void getMostQuestionCategory(final INotifyAction notifyAction) {
-        DatabaseReference mRef = database.getReference(Constant.ROOT_MOST_QUESTION_CATEGORY);
-        mRef.keepSynced(true);
-        final Map<String, String> resulList = new LinkedHashMap<>();
-
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String categoryText = snapshot.getValue(String.class);
-                    String categoryKey = snapshot.getKey();
-                    resulList.put(categoryKey, categoryText);
-                }
-                notifyAction.onNotified(Enums.GetMostQuestionCategory, resulList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public static void getMostQuestion(final INotifyAction notifyAction, String categoryKey) {
-
-        DatabaseReference mRef = database.getReference(Constant.ROOT_MOST_QUESTION + "/" + categoryKey);
-        mRef.keepSynced(true);
-
-        final List<MostQuestion> questionList = new ArrayList<>();
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    questionList.add(snapshot.getValue(MostQuestion.class));
-
-                }
-                notifyAction.onNotified(Enums.GetMostQuestion, questionList);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
 }

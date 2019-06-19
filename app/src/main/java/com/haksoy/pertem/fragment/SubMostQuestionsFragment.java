@@ -37,7 +37,6 @@ public class SubMostQuestionsFragment extends Fragment implements INotifyAction 
     @BindView(R.id.lstMainQuestions)
     ListView lstMainQuestions;
     private List<MostQuestion> questionList;
-    private List<String> keys;
 
     INotifyAction notifyAction;
     private List<MostQuestion> originalValue;
@@ -50,8 +49,8 @@ public class SubMostQuestionsFragment extends Fragment implements INotifyAction 
     }
 
 
-    public SubMostQuestionsFragment(String categoryKey, INotifyAction notifyAction) {
-        this.categoryKey = categoryKey;
+    public SubMostQuestionsFragment(List<MostQuestion> questionList, INotifyAction notifyAction) {
+        this.questionList=questionList;
         this.notifyAction = notifyAction;
     }
 
@@ -72,11 +71,9 @@ public class SubMostQuestionsFragment extends Fragment implements INotifyAction 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        questionList = new ArrayList<>();
         mAdapter = new MostQuestionAdapter(getActivity(), questionList);
         lstMainQuestions.setAdapter(mAdapter);
 
-        FirebaseClient.getInstance().getMostQuestion(this, categoryKey);
         lstMainQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -111,8 +108,6 @@ public class SubMostQuestionsFragment extends Fragment implements INotifyAction 
     public void onNotified(Object key, Object value) {
         if (key == Enums.Search) {
             filter((String) value);
-        } else if (key == Enums.GetMostQuestion) {
-            mAdapter.setData((List<MostQuestion>) value);
         } else if (key == Enums.DismissFragment) {
             getChildFragmentManager().popBackStack();
         }

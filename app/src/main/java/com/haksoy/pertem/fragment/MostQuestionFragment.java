@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.haksoy.pertem.R;
 import com.haksoy.pertem.firebase.FirebaseClient;
+import com.haksoy.pertem.model.MostQuestion;
 import com.haksoy.pertem.tools.Enums;
 import com.haksoy.pertem.tools.INotifyAction;
 
@@ -38,8 +39,8 @@ public class MostQuestionFragment extends Fragment implements INotifyAction {
     private Unbinder unbinder;
     private ViewPagerAdapter mPagerAdapter;
     INotifyAction notifyAction;
-    Map<String, String> mostQuestionList;
 
+    Map<String,List<MostQuestion>> mostQuestionList;
     public MostQuestionFragment() {
         // Required empty public constructor
     }
@@ -118,7 +119,7 @@ public class MostQuestionFragment extends Fragment implements INotifyAction {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FirebaseClient.getInstance().getMostQuestionCategory(this);
+        FirebaseClient.getInstance().getMostQuestionList(this);
     }
 
     @Override
@@ -129,10 +130,10 @@ public class MostQuestionFragment extends Fragment implements INotifyAction {
 
     @Override
     public void onNotified(Object key, Object value) {
-        if (key == Enums.GetMostQuestionCategory) {
-            mostQuestionList = (Map<String, String>) value;
+        if (key == Enums.GetMostQuestion) {
+            mostQuestionList= (Map<String, List<MostQuestion>>) value;
             for (String s : mostQuestionList.keySet()) {
-                mPagerAdapter.addFragment(new SubMostQuestionsFragment(s, notifyAction), mostQuestionList.get(s));
+                mPagerAdapter.addFragment(new SubMostQuestionsFragment(mostQuestionList.get(s), notifyAction), s);
             }
 
             mPagerAdapter.notifyDataSetChanged();

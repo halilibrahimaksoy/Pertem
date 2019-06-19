@@ -41,21 +41,18 @@ public class SplashActivity extends AppCompatActivity {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-
                     FirebaseClient.getInstance().getProcurementList(null);
                     FirebaseClient.getInstance().getAnnounceList(null);
                     DataUpdateHelper updateService = new DataUpdateHelper(new INotifyAction() {
                         @Override
                         public void onNotified(Object key, Object value) {
-                            if (key == Enums.UpdateCompleted) {
-                                startMainActivity(0);
-                            }
+                            startMainActivity(0);
                         }
                     });
                     updateService.controlAndUpdate(getApplicationContext());
-
                 }
             });
+
         }
 
     }

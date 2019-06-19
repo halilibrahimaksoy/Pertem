@@ -15,6 +15,7 @@ import com.haksoy.pertem.model.SendToTopicRequest;
 import com.haksoy.pertem.tools.Constant;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -63,7 +64,8 @@ public class RetrofitClient {
     static Retrofit getAnnounceClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).connectTimeout(60, TimeUnit.SECONDS)
+        .build();
 
 
         retrofit = new Retrofit.Builder()

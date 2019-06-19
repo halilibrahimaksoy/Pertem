@@ -1,5 +1,7 @@
 package com.haksoy.pertem.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
@@ -15,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdRequest;
@@ -300,7 +303,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNotified(Object key, Object value) {
         if (key == Enums.AnnounceDetail || key == Enums.ProcurementDetail) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frmMainContainer, new AnnounceDetail((String) value), key.toString()).addToBackStack("detail").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmMainContainer, new AnnounceDetail((String) value), key.toString()).addToBackStack("detail").commitAllowingStateLoss();
             setMenuVisibility(false);
             showInterstitialAd();
         } else if (key == Enums.SetNotifyAction) {

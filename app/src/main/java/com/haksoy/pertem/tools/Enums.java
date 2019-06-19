@@ -7,7 +7,6 @@ public enum Enums {
     GetAnnounce,
     GetProcurement,
     GetExplanation,
-    GetMostQuestionCategory,
     GetMostQuestion,
     GetUpdateConfig,DismissFragment
 
