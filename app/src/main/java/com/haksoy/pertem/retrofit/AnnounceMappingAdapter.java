@@ -43,7 +43,7 @@ public class AnnounceMappingAdapter extends Converter.Factory {
                             announce.setDate(element.select("p").get(3).text());
                             String subUrl = element.attr("onclick").split("'")[1];
                             temp = Jsoup.connect(Constant.ROOT_URL + subUrl).ignoreContentType(true).get();
-                            announce.setDesc(temp.getElementsByClass("container").get(2).attr("class", "container").toString());
+                            announce.setDesc(temp.getElementsByClass("container").get(3).attr("class", "container").toString());
                             announceList.add(announce);
                         }
 

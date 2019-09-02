@@ -187,8 +187,8 @@ public class DataUpdateHelper {
     private boolean onCompareAndNotifyList
             (List<BaseModelPresenter> oldList, List<BaseModelPresenter> newList) {
         boolean isNew = true;
-        if (newList == null || newList.size() == 0)
-            return false;
+//        if (newList == null || newList.size() == 0)
+//            return false;
         for (BaseModelPresenter newItem : newList) {
             isNew = true;
             for (BaseModelPresenter oldItem : oldList) {
