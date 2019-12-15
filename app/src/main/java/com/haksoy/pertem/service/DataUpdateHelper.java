@@ -206,7 +206,7 @@ public class DataUpdateHelper {
     }
 
     private void notifyOtherUser(BaseModelPresenter modelPresenter) {
-        RetrofitClient.sendNotification(new SendToTopicRequest(Constant.NEWS, new Notification(modelPresenter.onTitle())));
+        RetrofitClient.sendNotification(new SendToTopicRequest(Constant.NEWS_TOPIC, new Notification(modelPresenter.onTitle())));
         Log.d(TAG, "notifyOtherUser  : " + modelPresenter.onTitle() + " : " + modelPresenter.onDesc());
     }
 

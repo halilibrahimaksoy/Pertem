@@ -32,4 +32,5 @@
     <string name="new_version_title">Güncelleme Mevcut</string>
     <string name="new_version_message">Uygulamanın sağlıklı çalışabilmesi ve içeriklerin sağlanabilmesi için güncelleme gerekiyor!</string>
     <string name="new_version_button">Tamam</string>
+    <string name="askerol_url">https://www.kitapkargo.com/www.kitapkargo.com/asker-ol-6106</string>
 </resources>

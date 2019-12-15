@@ -27,11 +27,13 @@ public class Constant {
     public static String LAST_UPDATE_TIME = "LastUpdateTime";
     public static String LAST_UPDATE_DATE = "LastUpdateDate";
     public static String UPDATE_CYCLE = "UpdateCycle";
+    public static String ViewOtherAdd = "ViewOtherAdd";
 
     public static String TOPIC_TAG = "/topics/";
     public static String SEND_NOTIFICATION_URL = "https://fcm.googleapis.com";
 
-    public static String NEWS = "NEWS_TOPIC";
+    public static String NEWS_TOPIC = "NEWS_TOPIC";
+    public static String ADD_TOPIC = "ADD_TOPIC";
     public static String KEY_NAME = "ServerKey:";
 
     public static String url_kkk = "http://www.kkk.tsk.tr/";

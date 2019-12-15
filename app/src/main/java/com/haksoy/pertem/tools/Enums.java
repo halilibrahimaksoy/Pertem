@@ -9,7 +9,7 @@ public enum Enums {
     GetExplanation,
     GetMostQuestionCategory,
     GetMostQuestion,
-    GetUpdateConfig,DismissFragment
+    GetUpdateConfig,DismissFragment,GetAddStatusForOther
 
     ,UpdateCompleted,NEED_UPDATE
     ,StoreVersion

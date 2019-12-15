@@ -23,7 +23,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AnnounceDetail extends Fragment {
+public class ContentDetail extends Fragment {
 
 
     @BindView(R.id.wbvMain)
@@ -32,11 +32,11 @@ public class AnnounceDetail extends Fragment {
 
     private Unbinder unbinder;
 
-    public AnnounceDetail(String htmlText) {
+    public ContentDetail(String htmlText) {
         this.htmlText = htmlText;
     }
 
-    public AnnounceDetail() {
+    public ContentDetail() {
         // Required empty public constructor
     }
 
@@ -44,7 +44,7 @@ public class AnnounceDetail extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_announce_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_content_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         return view;
@@ -66,7 +66,7 @@ public class AnnounceDetail extends Fragment {
                     customTabsIntent.launchUrl(getActivity(), request.getUrl());
                     return true;
                 } catch (ActivityNotFoundException ex) {
-                    Log.e("AnnounceDetail", ex.getLocalizedMessage());
+                    Log.e("ContentDetail", ex.getLocalizedMessage());
                     return super.shouldOverrideUrlLoading(view, request);
                 }
 

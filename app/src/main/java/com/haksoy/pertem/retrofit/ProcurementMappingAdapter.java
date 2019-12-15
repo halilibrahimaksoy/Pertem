@@ -43,8 +43,7 @@ public class ProcurementMappingAdapter extends Converter.Factory {
                         procurement.setExp(element.select("p").get(0).text());
                         procurement.setDate(element.select("p").get(1).text());
                         String subUrl = element.attr("onclick").split("'")[1];
-                        temp = Jsoup.connect(Constant.ROOT_URL + subUrl).ignoreContentType(true).get();
-                        procurement.setDesc(temp.getElementsByClass("container").get(2).attr("class", "container").toString());
+                        procurement.setDesc(RetrofitClient.getContentDetail(subUrl));
                         procurementList.add(procurement);
                     }
 

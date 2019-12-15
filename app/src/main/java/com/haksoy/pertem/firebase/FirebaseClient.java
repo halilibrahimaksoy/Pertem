@@ -47,7 +47,7 @@ public class FirebaseClient {
     public static void getAnnounceList(final INotifyAction notifyAction) {
         final List<Announce> announceList;
         DatabaseReference mRef = database.getReference(Constant.ROOT_ANNOUNCE);
-        mRef.keepSynced(true);
+//        mRef.keepSynced(true);
         announceList = new ArrayList<>();
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -70,7 +70,7 @@ public class FirebaseClient {
     public static void getProcurementList(final INotifyAction notifyAction) {
         final List<Procurement> procurementList;
         DatabaseReference mRef = database.getReference(Constant.ROOT_PROCUREMENT);
-        mRef.keepSynced(true);
+//        mRef.keepSynced(true);
         procurementList = new ArrayList<>();
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -191,5 +191,21 @@ public class FirebaseClient {
         });
 
     }
+    public static void getAddStatusForOther(final INotifyAction notifyAction){
+        DatabaseReference mRef = database.getReference(Constant.ViewOtherAdd);
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean result = (Boolean) dataSnapshot.getValue();
+                notifyAction.onNotified(Enums.GetAddStatusForOther,result.booleanValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }

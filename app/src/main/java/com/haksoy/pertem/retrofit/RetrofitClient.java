@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.haksoy.pertem.adapter.ContentDetailMappingAdapter;
 import com.haksoy.pertem.model.SendToTopicRequest;
 import com.haksoy.pertem.tools.Constant;
 
@@ -76,7 +77,24 @@ public class RetrofitClient {
         return retrofit;
     }
 
-    static Retrofit getVersionStoreVersionClient(){
+    static Retrofit getContentDetailClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(Constant.ROOT_URL)
+                .addConverterFactory(new ContentDetailMappingAdapter())
+                .client(client)
+                .build();
+
+
+        return retrofit;
+    }
+
+
+    static Retrofit getVersionStoreVersionClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
@@ -139,10 +157,21 @@ public class RetrofitClient {
         return retrofit;
     }
 
-    public static void getAnnounceList(Callback callback) {
+    public static void getAnnounceList(final Callback callback) {
 
         FirebaseApi api = getAnnounceClient().create(FirebaseApi.class);
         api.getAnnounce().enqueue(callback);
+    }
+
+    public static String getContentDetail(String adress) {
+
+        FirebaseApi api = getContentDetailClient().create(FirebaseApi.class);
+        try {
+            return api.getContentDetetail(adress).execute().body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static void getExplanation(Callback callback) {
@@ -163,12 +192,13 @@ public class RetrofitClient {
         api.getMostQuestion().enqueue(callback);
     }
 
-    public static void getStoreVersion(Callback callback){
+    public static void getStoreVersion(Callback callback) {
         FirebaseApi api = getVersionStoreVersionClient().create(FirebaseApi.class);
         api.getStoreVersion().enqueue(callback);
     }
+
     public static void sendNotification(final SendToTopicRequest request) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(Constant.NEWS).addOnCompleteListener(new OnCompleteListener<Void>() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(Constant.NEWS_TOPIC).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -182,7 +212,7 @@ public class RetrofitClient {
                             @Override
                             public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
                                 Log.d("FirebaseApi", response.message());
-                                FirebaseMessaging.getInstance().subscribeToTopic(Constant.NEWS);
+                                FirebaseMessaging.getInstance().subscribeToTopic(Constant.NEWS_TOPIC);
                             }
 
                             @Override

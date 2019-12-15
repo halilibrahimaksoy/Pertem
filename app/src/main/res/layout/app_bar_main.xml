@@ -40,6 +40,17 @@
             android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
             ads:adUnitId="@string/banner_ad_unit_id" />
+
+        <com.haksoy.pertem.tools.GifImageView
+            android:id="@+id/askerolAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>

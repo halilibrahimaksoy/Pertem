@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -30,34 +29,42 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        progress = findViewById(R.id.progress3);
-        progress.animate();
-        if (!ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_warn), Toast.LENGTH_LONG).show();
-            startMainActivity(1000);
+        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().get("from").equals("/topics/ADD_TOPIC")) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.askerol_url)));
+            startActivity(browserIntent);
+            finish();
         } else {
-            FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-            FirebaseMessaging.getInstance().subscribeToTopic(Constant.NEWS);
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
 
-                    FirebaseClient.getInstance().getProcurementList(null);
-                    FirebaseClient.getInstance().getAnnounceList(null);
-                    DataUpdateHelper updateService = new DataUpdateHelper(new INotifyAction() {
-                        @Override
-                        public void onNotified(Object key, Object value) {
-                            if (key == Enums.UpdateCompleted) {
-                                startMainActivity(0);
+            progress = findViewById(R.id.progress3);
+            progress.animate();
+            if (!ConnectivityHelper.isConnectedToNetwork(getApplicationContext())) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_warn), Toast.LENGTH_LONG).show();
+                startMainActivity(1000);
+            } else {
+
+                FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+                FirebaseMessaging.getInstance().subscribeToTopic(Constant.NEWS_TOPIC);
+                FirebaseMessaging.getInstance().subscribeToTopic(Constant.ADD_TOPIC);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        FirebaseClient.getInstance().getProcurementList(null);
+                        FirebaseClient.getInstance().getAnnounceList(null);
+                        DataUpdateHelper updateService = new DataUpdateHelper(new INotifyAction() {
+                            @Override
+                            public void onNotified(Object key, Object value) {
+                                if (key == Enums.UpdateCompleted) {
+                                    startMainActivity(0);
+                                }
                             }
-                        }
-                    });
-                    updateService.controlAndUpdate(getApplicationContext());
+                        });
+                        updateService.controlAndUpdate(getApplicationContext());
 
-                }
-            });
+                    }
+                });
+            }
         }
-
     }
 
     private void showUpdateDialog() {

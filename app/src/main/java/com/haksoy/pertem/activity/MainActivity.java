@@ -1,7 +1,9 @@
 package com.haksoy.pertem.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -21,7 +23,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.haksoy.pertem.R;
-import com.haksoy.pertem.fragment.AnnounceDetail;
+import com.haksoy.pertem.firebase.FirebaseClient;
+import com.haksoy.pertem.fragment.ContentDetail;
 import com.haksoy.pertem.fragment.AnnounceFragment;
 import com.haksoy.pertem.fragment.AnswerFragment;
 import com.haksoy.pertem.fragment.ExplanationFragment;
@@ -30,6 +33,7 @@ import com.haksoy.pertem.fragment.MostQuestionFragment;
 import com.haksoy.pertem.fragment.ProcurementFragment;
 import com.haksoy.pertem.tools.Constant;
 import com.haksoy.pertem.tools.Enums;
+import com.haksoy.pertem.tools.GifImageView;
 import com.haksoy.pertem.tools.INotifyAction;
 
 import butterknife.BindView;
@@ -48,6 +52,8 @@ public class MainActivity extends AppCompatActivity
     LinearLayout txtDKK;
     @BindView(R.id.txtMSU)
     LinearLayout txtMSU;
+    @BindView(R.id.askerolAdd)
+    GifImageView askerolAdd;
 
 
     INotifyAction mNotifyAction;
@@ -60,6 +66,11 @@ public class MainActivity extends AppCompatActivity
     private AdView mBannerAd;
     private InterstitialAd mInterstitialAd;
     private AdRequest adRequest;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +92,23 @@ public class MainActivity extends AppCompatActivity
 
         mBannerAd = findViewById(R.id.adView);
         adRequest = new AdRequest.Builder().build();
-        mBannerAd.loadAd(adRequest);
+        FirebaseClient.getAddStatusForOther(new INotifyAction() {
+            @Override
+            public void onNotified(Object key, Object value) {
+                if ((boolean) value) {
+                    askerolAdd.setVisibility(View.VISIBLE);
+                    askerolAdd.setGifImageResource(R.drawable.askerol);
+                    askerolAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.askerol_url)));
+                            startActivity(browserIntent);
+                        }
+                    });
+                } else
+                    mBannerAd.loadAd(adRequest);
+            }
+        });
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
 
@@ -300,7 +327,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNotified(Object key, Object value) {
         if (key == Enums.AnnounceDetail || key == Enums.ProcurementDetail) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frmMainContainer, new AnnounceDetail((String) value), key.toString()).addToBackStack("detail").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmMainContainer, new ContentDetail((String) value), key.toString()).addToBackStack("detail").commit();
             setMenuVisibility(false);
             showInterstitialAd();
         } else if (key == Enums.SetNotifyAction) {

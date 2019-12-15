@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 public interface FirebaseApi {
 
@@ -34,4 +35,7 @@ public interface FirebaseApi {
 
     @GET("details?id=com.haksoy.pertem")
     Call<String> getStoreVersion();
+
+    @GET
+    Call<String> getContentDetetail(@Url String url);
 }

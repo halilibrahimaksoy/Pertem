@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -20,11 +22,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        sendNotification(remoteMessage.getNotification().getBody());
-
+        sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getFrom().equals("/topics/ADD_TOPIC"));
+        Log.d(TAG, "onMessageReceived : " + remoteMessage.getNotification().getBody());
     }
 
-    private  void sendNotification(String message) {
+    private void sendNotification(String message, boolean isAdd) {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -42,9 +44,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
+        PendingIntent pendingIntent;
+        if (isAdd) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.askerol_url)));
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, browserIntent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        } else {
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.msb_logo)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.msb_logo))
