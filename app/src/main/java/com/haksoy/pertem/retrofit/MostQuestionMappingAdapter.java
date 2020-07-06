@@ -31,7 +31,7 @@ public class MostQuestionMappingAdapter extends Converter.Factory {
         return new Converter<ResponseBody, Map<String, List<MostQuestion>>>() {
 
             @Override
-            public Map<String, List<MostQuestion>> convert(ResponseBody value) throws IOException {
+            public Map<String, List<MostQuestion>> convert(ResponseBody value) {
                 Map<String, List<MostQuestion>> resultMap = new LinkedHashMap<>();
                 List<MostQuestion> mostQuestionList = new ArrayList<>();
                 Document doc;
@@ -45,13 +45,19 @@ public class MostQuestionMappingAdapter extends Converter.Factory {
 
                         mostQuestionList = new ArrayList<>();
                         for (int i = 0; i < questionElements.get(0).getElementsByClass(Constant.subMostQuestionsQuestion).size(); i++) {
-                            mostQuestion = new MostQuestion(questionElements.get(0).getElementsByClass(Constant.subMostQuestionsQuestion).get(i).select("p").text(), questionElements.get(0).getElementsByClass(Constant.subMostQuestionsAnswer).get(i).select("p").toString());
-                            mostQuestionList.add(mostQuestion);
+                            try {
+                                mostQuestion = new MostQuestion(questionElements.get(0).getElementsByClass(Constant.subMostQuestionsQuestion).get(i).select("p").text(), questionElements.get(0).getElementsByClass(Constant.subMostQuestionsAnswer).get(i).select("p").toString());
+                                mostQuestionList.add(mostQuestion);
+                            } catch (IndexOutOfBoundsException e) {
+                                Log.e(TAG, e.getLocalizedMessage());
+                            }
                         }
                         resultMap.put(element.text(), mostQuestionList);
                         count++;
 
 
+                        if(count>=elements.select("li").size())
+                            break;
                     }
 
                 } catch (IOException e) {

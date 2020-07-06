@@ -1,6 +1,6 @@
 package com.haksoy.pertem.firebase;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,7 +12,6 @@ import com.haksoy.pertem.model.Announce;
 import com.haksoy.pertem.model.ExplanationModel;
 import com.haksoy.pertem.model.MostQuestion;
 import com.haksoy.pertem.model.Procurement;
-import com.haksoy.pertem.model.UpdateConfig;
 import com.haksoy.pertem.tools.Constant;
 import com.haksoy.pertem.tools.Enums;
 import com.haksoy.pertem.tools.INotifyAction;
@@ -191,13 +190,17 @@ public class FirebaseClient {
         });
 
     }
-    public static void getAddStatusForOther(final INotifyAction notifyAction){
+    public static void getAddStatusForOther(final INotifyAction notifyAction) {
         DatabaseReference mRef = database.getReference(Constant.ViewOtherAdd);
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Boolean result = (Boolean) dataSnapshot.getValue();
-                notifyAction.onNotified(Enums.GetAddStatusForOther,result.booleanValue());
+                try {
+                    Boolean result = (Boolean) dataSnapshot.getValue();
+                    notifyAction.onNotified(Enums.GetAddStatusForOther, result.booleanValue());
+                } catch (NullPointerException ex) {
+                    Log.e(TAG, ex.getLocalizedMessage());
+                }
             }
 
             @Override

@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().get("from").equals("/topics/ADD_TOPIC")) {
+        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().get("from") instanceof String && getIntent().getExtras().get("from").equals("/topics/ADD_TOPIC")) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.askerol_url)));
             startActivity(browserIntent);
             finish();

@@ -3,17 +3,16 @@ package com.haksoy.pertem.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.fragment.app.Fragment;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +21,7 @@ import android.widget.LinearLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.material.navigation.NavigationView;
 import com.haksoy.pertem.R;
 import com.haksoy.pertem.firebase.FirebaseClient;
 import com.haksoy.pertem.fragment.ContentDetail;
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
 
         mBannerAd = findViewById(R.id.adView);
         adRequest = new AdRequest.Builder().build();
-        FirebaseClient.getAddStatusForOther(new INotifyAction() {
+        FirebaseClient.getInstance().getAddStatusForOther(new INotifyAction() {
             @Override
             public void onNotified(Object key, Object value) {
                 if ((boolean) value) {
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity
         setTitle(target);
         setMenuVisibilityForActiveFragment();
 
-        showInterstitialAd();
+//        showInterstitialAd();
     }
 
 

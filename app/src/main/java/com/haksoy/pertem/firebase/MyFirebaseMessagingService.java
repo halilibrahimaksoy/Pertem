@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -42,17 +42,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             mChannel.setShowBadge(false);
             notificationManager.createNotificationChannel(mChannel);
         }
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent;
         PendingIntent pendingIntent;
         if (isAdd) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.askerol_url)));
-            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, browserIntent,
-                    PendingIntent.FLAG_ONE_SHOT);
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.askerol_url)));
         } else {
-            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+            intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
+        pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.msb_logo)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.msb_logo))

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5d1f1f</color>
+    <color name="colorPrimary">#4b5320</color>
     <color name="colorPrimaryDark">#2a2a2a</color>
     <color name="colorAccent">#262a2e</color>
 
@@ -29,7 +29,7 @@
     <color name="announce_item_background">@color/base_item_background</color>
     <color name="procurement_item_background">@color/base_item_background</color>
     <color name="explanation_item_background">@color/base_item_background</color>
-    <color name="measurement_sticky_background">#963232</color>
+    <color name="measurement_sticky_background">#556b2f</color>
     <color name="measurement_sticky_icon">#fff</color>
     <color name="measurement_hint_icon">#bbb</color>
     <color name="measurement_background">#B0BEC5</color>
